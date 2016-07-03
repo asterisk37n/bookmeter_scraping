@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+        <meta charset="UTF-8">
+        <title>BOOK LIST</title>
+    </head>
+    <body>
+        <p><h1>Books sold reasonably on Amazon</h1></p>
+        <p><h2>Books on bookmeter.com with new price, used price and its ratio on amazon.co.jp</h2></p>
+        <ul class="book_list">
+        {% for i in books %}
+            <li>
+                <ul {% if 0<i['price_ratio']|float()<0.01 or i['used_price']|int()<=10 %}class="row_reasonable"{% else %}class="row"{% endif %}>
+                    <li class="thumbnail"><img class="thumbnail" src="{{i['thumbnail']}}" alt="IMG"></li>
+                    <li class="title"><a href="{{i['detail_page']}}" target="_blank">{{i['title']}}</a><div class="author_publisher">{{i['author']}}, {{i['publisher']}}</div></li>
+                    <li class="new_price">{% if i['new_price']|int()>0 %} {{'\u00A5'+i['new_price']|string()}}{% else %} - {% endif %}</li>
+                    <li class="used_price">{% if i['used_price']|int()>0 %} {{'\u00A5'+i['used_price']|string()}}{% else %} - {% endif %}</li>
+                    <li class="price_ratio">{% if i['price_ratio']|int()>0 %} {{i['price_ratio']}}{% else %} - {% endif %}</li>
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

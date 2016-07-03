@@ -1,0 +1,30 @@
+body            { font-family: sans-serif; background: #f2f2f2; }
+a, h1, h2       { color: #377ba8; }
+h1, h2          { font-family: 'Georgia', serif; margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em; }
+
+.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
+                  padding: 0.8em; background: white; }
+.entries        { list-style: none; margin: 0; padding: 0; }
+.entries li     { margin: 0.8em 1.2em; }
+.entries li h2  { margin-left: -1em; }
+.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
+.add-entry dl   { font-weight: bold; }
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+                  margin-bottom: 1em; background: #fafafa; }
+.flash          { background: #cee5F5; padding: 0.5em;
+                  border: 1px solid #aacbe2; }
+.error          { background: #f0d6d6; padding: 0.5em; }
+
+
+img.thumbnail   { max-height: 50px; }
+ul.book_list    {list-style-type:none;}
+ul.row          {list-style-type:none; vertical-align:middle;margin:1 auto;}
+ul.row_reasonable {list-style-type:none; vertical-align:middle; margin:1 auto; background-color: #ffcccc;}
+li.thumbnail    {display:inline-block; vertical-align:middle;width:auto;}
+li.title        {display:inline-block; vertical-align:middle;width:auto;}
+div.author_publisher {display:block;}
+li.new_price    {display:inline-block; vertical-align:middle;width:auto;}
+li.used_price   {display:inline-block; vertical-align:middle;width:auto;}
+li.price_ratio  {display:inline-block; vertical-align:middle;width:auto;}
