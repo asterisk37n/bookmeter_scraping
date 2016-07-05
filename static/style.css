@@ -23,7 +23,7 @@ ul.book_list    {list-style-type:none;}
 ul.row          {list-style-type:none; vertical-align:middle;margin:1 auto;}
 ul.row_reasonable {list-style-type:none; vertical-align:middle; margin:1 auto; background-color: #ffcccc;}
 li.thumbnail    {display:inline-block; vertical-align:middle;width:36px;max-height:50px;}
-li.title        {display:inline-block; vertical-align:middle;width:auto;width: 600px;}
+li.title        {display:inline-block; vertical-align:middle;width:auto;width: 380px;}
 div.author_publisher {display:block;}
 li.new_price    {display:inline-block; vertical-align:middle;width:auto;width: 100px;}
 li.used_price   {display:inline-block; vertical-align:middle;width:auto;width: 100px;}
