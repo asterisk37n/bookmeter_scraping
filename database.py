@@ -57,12 +57,6 @@ class Database():
             columns = self.get_column_names()
             values = tuple([item[column] for column in columns])
             self.cur.execute('INSERT OR REPLACE INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', values)
-#            try: 
-#                self.cur.execute('INSERT INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', values)
-#                print('Insert successful.')                
-#            except sqlite3.IntegrityError as e:
-#                self.cur.execute('REPLACE INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', values)
-#                print('Insert successful.')
         def insert_tuple(item):
             self.cur.execute('INSERT INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', item)
 #                print('Insert successful.')
@@ -73,11 +67,12 @@ class Database():
         elif isinstance(items,list):
             if isinstance(items[0],tuple):
                 self.cur.executemany('INSERT INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', items)
+                print('Insert successful:', items)
             elif isinstance(items[0], dict):
-#                [insert_dict(i) for i in itemsi
                 columns = self.get_column_names()
                 values = [tuple(item[column] for column in columns) for item in items]
                 self.cur.executemany('INSERT OR REPLACE INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?)', values)
+                print('Insert successful:', items)
         else:
             print('ERROR in inserting {}.'.format(items))
         self.select_all_books()
@@ -85,10 +80,11 @@ class Database():
     def isnew(self, isbn):
         booktuple = self.select_book(isbn)
         if booktuple is None:
+            print(isbn, booktuple, 'is None')
             return False
         else:
             scraped_datetime = datetime.datetime.strptime(booktuple[-1], '%Y-%m-%d %H:%M:%S.%f')
-            if  scraped_datetime < datetime.datetime.now() < scraped_datetime + datetime.timedelta(minutes=60):
+            if  scraped_datetime < datetime.datetime.now() < scraped_datetime + datetime.timedelta(days=1):
                 return True
             else:
                 return False

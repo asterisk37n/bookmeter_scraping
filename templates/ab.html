@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
         <meta charset="UTF-8">
         <meta name=viewport content="width=device-width, initial-scale=1">
         <title>BOOK LIST</title>
@@ -9,18 +9,32 @@
     <body>
         <p><h1>Books sold reasonably on Amazon</h1></p>
         <p><h2>Books on bookmeter.com with new price, used price and its ratio on amazon.co.jp</h2></p>
+        <p><!-- link -->
+            {% if page==2 %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=None)}}">PREVIOUS</a>{% endif %}
+            {% if page>2 %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page-1)}}">PREVIOUS</a>{% endif %}
+            {% for i in range(start,end+1) %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=i)}}">{{i}} </a>{% endfor %}
+            {% if page<last_page_number %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page+1)}}">NEXT</a>{% endif %}
+        </p>
         <ul class="book_list">
+            <li><ul classs="row"><li class="thumbnail"></li><li class="title"></li><li class="new_price">新品</li><li class="used_price">中古</li></ul></li>
         {% for i in books %}
             <li>
-                <ul {% if 0<i['price_ratio']|float()<0.01 or i['used_price']|int()<=10 %}class="row_reasonable"{% else %}class="row"{% endif %}>
-                    <li class="thumbnail"><img class="thumbnail" src="{{i['thumbnail']}}" alt="IMG"></li>
+                <ul {% if i['reasonable'] %}class="row_reasonable"{% else %}class="row"{% endif %}>
+                    <li class="thumbnail"><img class="thumbnail" src="{{i['thumbnail']}}" alt="IMB"></li>
                     <li class="title"><a href="{{i['detail_page']}}" target="_blank">{{i['title']}}</a><div class="author_publisher">{{i['author']}}, {{i['publisher']}}</div></li>
-                    <li class="new_price">{% if i['new_price']|int()>0 %} {{'\u00A5'+i['new_price']|string()}}{% else %} - {% endif %}</li>
-                    <li class="used_price">{% if i['used_price']|int()>0 %} {{'\u00A5'+i['used_price']|string()}}{% else %} - {% endif %}</li>
-                    <li class="price_ratio">{% if i['price_ratio']|int()>0 %} {{i['price_ratio']}}{% else %} - {% endif %}</li>
+                    <li class="new_price">{{'\u00A5'+i['new_price']}}</li>
+                    <li class="used_price">{{'\u00A5'+i['used_price']}}</li>
+                    <!-- <li class="price_ratio">{% if i['price_ratio']|int()>=0 %} {{i['price_ratio']}}{% else %} - {% endif %}</li> -->
                 </ul>
             </li>
         {% endfor %}
         </ul>
+        <p><!-- link -->
+            {% if page==2 %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=None)}}">PREVIOUS</a>{% endif %}
+            {% if page>2 %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page-1)}}">PREVIOUS</a>{% endif %}
+            {% for i in range(start,end+1) %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=i)}}">{{i}} </a>{% endfor %}
+            {% if page<last_page_number %}<a href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page+1)}}">NEXT</a>{% endif %}
+        </p>
+
     </body>
 </html>

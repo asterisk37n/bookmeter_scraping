@@ -69,7 +69,10 @@ class AmazonAPI():
         ns = 'http://webservices.amazon.com/AWSECommerceService/2013-08-01'
         self.books_in_xml = []        
         for item in root.findall('.//ns:Items/ns:Item', namespaces={'ns':ns}):
-            try:isbn = item.find('.//ns:ItemAttributes/ns:ISBN', namespaces={'ns':ns}).text
+            try:
+                isbn = item.find('.//ns:ItemAttributes/ns:ISBN', namespaces={'ns':ns}).text
+            except AttributeError as e:
+                isbn = item.find('.//ns:ASIN', namespaces={'ns':ns}).text
             except:isbn = '';print('ISBN')
             try:title = item.find('.//ns:ItemAttributes/ns:Title', namespaces={'ns':ns}).text
             except:title = '';print('title')

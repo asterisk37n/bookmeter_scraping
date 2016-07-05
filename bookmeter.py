@@ -16,7 +16,7 @@ class BookmeterScraping():
     def __init__(self, bookmeter_ID):
         self.bookmeter_ID = bookmeter_ID if isinstance(bookmeter_ID, str) else str(bookmeter_ID)
         self.isbns_to_read = []
-    
+        self.last_page=0    
     def get_isbns_to_read(self, debug=False):
         """
             debug==True is for offline mode.
@@ -40,17 +40,23 @@ class BookmeterScraping():
     def get_isbns_in_page(self, page):
         url = 'http://bookmeter.com/u/{id}/booklistpre&p={page}'.format(**{'id':self.bookmeter_ID, 'page':page})
         isbns_in_page = self._get_isbn_from_URL(url)
-        return isbns_in_page
-        
+        return isbns_in_page        
+
 
     def _get_isbn_from_URL(self, url):
         page = requests.get(url)
         tree = lxml.html.fromstring(page.content)
         href_list = tree.xpath('//div[@class="book_box_book_title"]/a/@href')
-        ISBN10_in_page = [href[3:] for href in href_list if href.startswith('/b')]
-        return ISBN10_in_page
-    
+        isbns_in_page = [href[3:] for href in href_list if href.startswith('/b')]
+        self._get_last_page_number(tree)
+        return isbns_in_page
+
+    def _get_last_page_number(self, tree):        
+        print(tree.xpath('//span[@class="page_navi_hedge"]/a/@href'))
+        self.last_page_number = int(tree.xpath('//span[@class="page_navi_hedge"]/a/@href')[-1].split('=')[-1])
+        return self.last_page_number
+
 if __name__ == '__main__':
     bs = BookmeterScraping('104933')
-    isbns = bs.get_isbns_to_read(debug=True)
-    print(isbns)
+    bs.get_isbns_in_page(10)
+    print(bs.last_page_number)
