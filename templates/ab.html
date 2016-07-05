@@ -4,6 +4,7 @@
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
         <meta charset="UTF-8">
         <meta name=viewport content="width=device-width, initial-scale=1">
+        {% if page<last_page_number %}<link rel="prerender" href= "{{url_for('ab',bookmeter_id=bookmeter_id, page=page+1)}}"/>{% endif %}
         <title>BOOK LIST</title>
     </head>
     <body>
