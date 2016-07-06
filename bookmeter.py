@@ -16,7 +16,7 @@ class BookmeterScraping():
     def __init__(self, bookmeter_ID):
         self.bookmeter_ID = bookmeter_ID if isinstance(bookmeter_ID, str) else str(bookmeter_ID)
         self.isbns_to_read = []
-        self.last_page=0    
+        self.last_page_number = 1
     def get_isbns_to_read(self, debug=False):
         """
             debug==True is for offline mode.
@@ -52,11 +52,12 @@ class BookmeterScraping():
         return isbns_in_page
 
     def _get_last_page_number(self, tree):        
-        print(tree.xpath('//span[@class="page_navi_hedge"]/a/@href'))
-        self.last_page_number = int(tree.xpath('//span[@class="page_navi_hedge"]/a/@href')[-1].split('=')[-1])
+        page_navi_hedge = tree.xpath('//span[@class="page_navi_hedge"]/a/@href') # start or last link
+        if len(page_navi_hedge)>1: # if contains end
+            self.last_page_number = int(tree.xpath('//span[@class="page_navi_hedge"]/a/@href')[-1].split('=')[-1])
         return self.last_page_number
 
 if __name__ == '__main__':
     bs = BookmeterScraping('104933')
-    bs.get_isbns_in_page(10)
+    bs.get_isbns_in_page(15)
     print(bs.last_page_number)
