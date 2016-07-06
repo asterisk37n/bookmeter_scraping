@@ -20,7 +20,7 @@
             <li><ul classs="row"><li class="thumbnail"></li><li class="title"></li><li class="new_price">新品</li><li class="used_price">中古</li></ul></li>
         {% for i in books %}
             <li>
-                <ul {% if i['reasonable'] %}class="row_reasonable"{% else %}class="row"{% endif %}>
+                <ul {% if i['used_price']=='1' %}class="row1jpy"{% elif i['reasonable'] and i['used_price']!='1'%}class="row_reasonable"{% else %}class="row"{% endif %}>
                     <li class="thumbnail"><img class="thumbnail" src="{{i['thumbnail']}}" alt="IMB"></li>
                     <li class="title"><a href="{{i['detail_page']}}" target="_blank">{{i['title']}}</a><div class="author_publisher">{{i['author']}}, {{i['publisher']}}</div></li>
                     <li class="new_price">{{'\u00A5'+i['new_price']}}</li>
