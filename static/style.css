@@ -28,3 +28,6 @@ div.author_publisher {display:block;}
 li.new_price    {display:inline-block; vertical-align:middle;width:auto;width: 100px;}
 li.used_price   {display:inline-block; vertical-align:middle;width:auto;width: 100px;}
 li.price_ratio  {display:inline-block; vertical-align:middle;width:auto;}
+
+ul.links        {list-style-type: none;margin-left:40% auto;}
+li.link         {display: inline-block; margin:0 0 3px 0;}
