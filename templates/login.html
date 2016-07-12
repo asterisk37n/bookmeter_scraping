@@ -2,13 +2,14 @@
 <html>
     <head>
         <link rel="stylesheet" type= "text/css" href="{{url_for('static',filename='login.css')}}">
+        <title>読みたい本リスト- 読書メーターの読みたい本リストからお手頃な本を探す</title>
     </head>
     <body>
         <div><h1>Find reasonable books</h1>
         {% if msg is defined %}{{msg}}{% endif %}
         <form action="" method="POST">
             <input type="text" name="id" size="35" placeholder="http://bookmeter.com/u/(id)">
-            <input type=submit value=Login>
+            <input type=submit value=Submit>
         </form></div>
     </body>
 </html>
