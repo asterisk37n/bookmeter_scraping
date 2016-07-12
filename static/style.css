@@ -19,7 +19,7 @@ h2              { font-size: 1.2em; margin:auto 60px;}
 
 
 img.thumbnail   { max-height: 50px; width:36px;}
-ul.book_list    {list-style-type:none;margin: auto;}
+ul.book_list    {list-style-type:none; margin:auto;}
 ul.row          {list-style-type:none; vertical-align:middle;margin:1px auto;}
 ul.row_reasonable {list-style-type:none; vertical-align:middle; margin:1px auto; background-color: #ffcccc;}
 ul.row1jpy      {list-style-type:none; vertical-align:middle; margin:1px auto; background-color: #ff9999;}
