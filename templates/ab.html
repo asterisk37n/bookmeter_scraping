@@ -17,7 +17,13 @@
             {% if page<last_page_number %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page+1)}}">NEXT</a></li>{% endif %}
         </ul>
         <ul class="book_list">
-            <li><ul classs="row"><li class="thumbnail"></li><li class="title"></li><li class="new_price">新品</li><li class="used_price">中古</li></ul></li>
+            <li>
+                <ul classs="row">
+                <li class="thumbnail"></li>
+                <li class="title"></li>
+                <li class="new_price">新品</li>
+                <li class="used_price">中古</li></ul>
+            </li>
         {% for i in books %}
             <li>
                 <ul {% if i['used_price']=='1' %}class="row1jpy"{% elif i['reasonable'] and i['used_price']!='1'%}class="row_reasonable"{% else %}class="row"{% endif %}>
