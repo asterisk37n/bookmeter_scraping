@@ -16,14 +16,14 @@ app = Flask(__name__)
 # def index():
 #    return 'Index Page'
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print(request.method)
     if request.method == 'POST':
         if not request.form['id'].startswith('http://bookmeter.com/u/'):
             return render_template('login.html', msg='URL is incorrect.')
         session['id'] = request.form['id'].replace('http://bookmeter.com/u/', '')
+        print(session['id'])
         return redirect(url_for('ab', bookmeter_id=session['id']))
     return render_template('login.html')
 
