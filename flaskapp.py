@@ -20,9 +20,12 @@ app = Flask(__name__)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if not request.form['id'].startswith('http://bookmeter.com/u/'):
-            return render_template('login.html', msg='URL is incorrect.')
-        session['id'] = request.form['id'].replace('http://bookmeter.com/u/', '')
+        bookmeter_id = request.form['id'].strip()
+        if bookmeter_id.endswith('/'):
+            bookmeter_id = bookmeter_id[:-1]
+        if not bookmeter_id.startswith('http://bookmeter.com/u/'):
+            return render_template('login.html', msg='URL {} is incorrect.'.format(request.form['id']))
+        session['id'] = bookmeter_id.replace('http://bookmeter.com/u/', '')
         print(session['id'])
         return redirect(url_for('ab', bookmeter_id=session['id']))
     return render_template('login.html')
