@@ -53,21 +53,19 @@ class BookmeterScraping():
 
     def _get_last_page_number(self, tree):        
         page_navi_hedge = tree.xpath('//span[@class="page_navi_hedge"]/a/@href') # start or last link
-        href = tree.xpath('//div[@class="page_navis"]')[0][-1][0].get('href')
-        if not href.endswith('booklistpre') and self.last_page_number<0:
-            self.last_page_number = int(href.split('=')[-1])
+        page_navis = tree.xpath('//div[@class="page_navis"]')
+        if page_navis: # if page has links to another page
+            href = page_navis[0][-1][0].get('href')
+            if not href.endswith('booklistpre') and self.last_page_number<0:
+                self.last_page_number = int(href.split('=')[-1])
+            else:
+                pass
+            print(self.last_page_number)
+            return self.last_page_number
         else:
-            pass
-#        self.last_page_number = tree.xpath('//div[@class="page_navis"]')[0][-1][0].get('href')
-#        if len(page_navi_hedge)==1: # if not contains end
-#        else:
-#        self.last_page_number = int(tree.xpath('//span[@class="page_navi_hedge"]/a/@href')[-1].split('=')[-1])
-        print(self.last_page_number)
-        return self.last_page_number
+            self.last_page_number = 1
 
 if __name__ == '__main__':
-    bs = BookmeterScraping('104933')
+    bs = BookmeterScraping('107634')
     bs.get_isbns_in_page(1)
-    bs.get_isbns_in_page(14)
-    bs.get_isbns_in_page(15)
-    bs.get_isbns_in_page(18)
+
