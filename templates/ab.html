@@ -9,7 +9,7 @@
     </head>
     <body>
         <p><h1>読みたい本リスト一覧</h1></p>
-        <p><h2>新品価格、中古価格を表示します.</h2></p>
+        <p><h2>読書メーターの読みたい本リストから, Amazonの新品価格, 中古価格を表示します.</h2></p>
         <ul class="links"><!-- link -->
             {% if page==2 %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=None)}}">PREVIOUS</a></li>{% endif %}
             {% if page>2 %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page-1)}}">PREVIOUS</a></li>{% endif %}
@@ -39,7 +39,7 @@
         <ul class="links"><!-- link -->
             {% if page==2 %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=None)}}">PREVIOUS</a></li>{% endif %}
             {% if page>2 %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page-1)}}">PREVIOUS</a></li>{% endif %}
-            {% for i in range(start,end+1) %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=i)}}">{{i}}</a></li> {% endfor %}
+            {% for i in range(start,end+1) %}<li class="link">{% if i==page %}<div>{{i}}</div>{% else %}<a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=i)}}">{{i}}</a></li>{% endif %}{% endfor %}
             {% if page<last_page_number %}<li class="link"><a class="link" href="{{url_for('ab',bookmeter_id=bookmeter_id, page=page+1)}}">NEXT</a></li>{% endif %}
         </ul>
     <script>
