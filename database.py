@@ -27,6 +27,7 @@ class Database():
     """
     def __init__(self):
         self.DATABASE = os.path.join(os.path.dirname(__file__),'database','books.db')
+
     def connect(self, debug=False):
         if debug:
             self.conn = sqlite3.connect(self.DATABASE)
@@ -38,19 +39,11 @@ class Database():
             new_price integer, used_price integer, price_ratio real, shipping integer,
             detail_page text, thumbnail text, scraped_date text
         )''')
-        self.select_all_books()
-
-    def close(self):
-        self.cur.close()
-        self.conn.close()
+        self.get_column_names()
 
     def __str__(self):
         pass
 
-    def select_all_books(self):
-        self.books = list(self.cur.execute('''SELECT * FROM books ORDER BY price_ratio ASC'''))
-        return self.books
-        
     def insert_row(self, items):
         """ items is dict, tuple, list of tuples, or list of dicts"""
         def insert_dict(item):
@@ -89,20 +82,32 @@ class Database():
             else:
                 return False
                   
-    def select_book(self, isbn):
-        """ return a tuple. If isbn does not exists in the table, returns empty tuple, (). """
-        return self.cur.execute('SELECT * FROM books WHERE isbn=?',(isbn,)).fetchone()
+    def select_book_dict(self, isbn):
+        """ return a dict. if isbn does not exists in the table, returns empty dict, {}. """
+        tpl = self.cur.execute('SELECT * FROM books WHERE isbn=?',(isbn,)).fetchone()
+        book = {}
+        for i, column in enumerate(self.column_names):
+            book[column] = tpl[i]
+        return book        
 
     def get_column_names(self):
         """ return list of names """
         pragma = self.cur.execute('PRAGMA table_info(books)')
         result = self.cur.fetchall()
         names = [i[1] for i in result]
+        self.column_names = names 
         return names
+
+    def get_isbn_iter(self):
+        return iter(self.cur.execute('SELECT isbn FROM books').fetchall())
 
     def commit(self):
         self.conn.commit()
 
+    def close(self):
+        self.cur.close()
+        self.conn.close()
+ 
     def get_db(self):
         db = getattr(g, '_database', None)
         if db is None:

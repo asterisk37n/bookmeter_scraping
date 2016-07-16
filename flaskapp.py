@@ -44,8 +44,6 @@ def loadkey(path):
 @app.route('/ab/<bookmeter_id>', methods=['GET', 'POST'])
 @app.route('/ab/<bookmeter_id>/<page>', methods=['GET', 'POST'])
 def ab(bookmeter_id, page=None):
-#    if 'id' not in session:
-#        return 'You are not logged in'
     if page is None:
         page=1
     starttime = time.time()
@@ -55,21 +53,14 @@ def ab(bookmeter_id, page=None):
     aws_access_id, aws_secret_key = loadkey('/home/ec2-user/.aws/credentials/rootkey.csv')
     api = AmazonAPI(aws_access_id, aws_secret_key, 'asterisk37n-22')
     show_isbns = iter(bs.get_isbns_in_page(page=page))
-#    isbns.extend(bs.get_isbns_in_page(page=2))
     visible_books = []
     query_isbns=[]
     time1 = time.time()
     print('finished scraping', time1-starttime)
     for isbn in show_isbns:
         if db.isnew(isbn):
-            book = {}
-            row_tuple = db.select_book(isbn)
-            for i, column in enumerate(db.get_column_names()):
-                book[column] = row_tuple[i]
-            visible_books.append(book)
-            print('NEW',isbn)
+            visible_books.append(db.select_book_dict(isbn))
         else: 
-            print('OLD', isbn)
             query_isbns.append(isbn)
             if len(query_isbns) == 10:
                 result = api.query_to_list_of_dicts(*query_isbns)
@@ -85,9 +76,7 @@ def ab(bookmeter_id, page=None):
             db.insert_row(result)
     db.commit()
     db.close()
-    visible_books_currency=[]
-    time2 = time.time()
-    print('for loop', time2-time1)
+    print('for loop', time.time()-time1)
     books_shown = visible_books
     for i in books_shown:
         i['reasonable'] = 0<i['used_price']<=100 or 0<=i['price_ratio']<=0.01
