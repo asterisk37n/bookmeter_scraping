@@ -23,18 +23,8 @@ class AmazonAPI():
         self.access_key = access_key
         self.secret_key = secret_key
         self.accociate_tag = associate_tag
-        self.books = []
-        
-    # def load_aws_keys(self, filename='rootkey.csv'):
-    #     with open(filename, newline='') as f:
-    #         reader = csv.reader(f)
-    #         aws_keys = []
-    #         for row in reader:
-    #             key, value = row[0].split('=')
-    #             aws_keys.append(value)
-    #         self.access_key, self.secret_key = aws_keys[0], aws_keys[1]
-    #         return (self.access_key, self.secret_key)
-        
+        self.books = []   
+       
     def item_lookup(self, *itemid):
         verb = 'GET'
         endpoint = 'http://webservices.amazon.co.jp/onca/xml'
@@ -89,8 +79,7 @@ class AmazonAPI():
             try:detail_page = item.find('.//ns:DetailPageURL', namespaces={'ns':ns}).text
             except:detail_page = ''
             price_ratio = self._calculate_price_ratio(new_price, used_price)
-            try:shipping = self._get_shipping(isbn)
-            except:shipping = np.nan
+            shipping = 257
             scraped_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
             book_dict = {'isbn':isbn, 'title':title, 'author':author,'publisher':publisher,
                          'new_price':new_price, 'used_price':used_price, 'thumbnail':thumbnail,
