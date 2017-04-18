@@ -38,7 +38,7 @@ class BookmeterScraping():
         return self.isbns_to_read
 
     def get_isbns_in_page(self, page):
-        url = 'http://bookmeter.com/u/{id}/booklistpre&p={page}'.format(**{'id':self.bookmeter_ID, 'page':page})
+        url = 'https://bookmeter.com/users/{id}/books/wish?page={page}'.format(**{'id':self.bookmeter_ID, 'page':page})
         isbns_in_page = self._get_isbn_from_URL(url)
         return isbns_in_page        
 
