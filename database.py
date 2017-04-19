@@ -10,7 +10,7 @@ class Database():
     Methods:
         select_all_books(): returns self.books, which is list of tuples.
         insert_row(items): items is dict, tuple, list of tuples or list of dicts.
-        isnew(isbn): if scraped information is 10 minutes old oy younger.
+        isnew(isbn): true if scraped information is less than one day old.
         select_book(isbn): return row from table. If isbn is not in table, returns empty tuple ().
 
     (0,'isbn', 'text', 0, None, 1),
