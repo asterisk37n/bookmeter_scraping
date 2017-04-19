@@ -68,7 +68,6 @@ class Database():
                 print('Insert successful:', items)
         else:
             print('ERROR in inserting {}.'.format(items))
-        self.select_all_books()
 
     def isnew(self, isbn):
         booktuple = self.select_book(isbn)
@@ -81,7 +80,11 @@ class Database():
                 return True
             else:
                 return False
-                  
+
+    def select_book(self, isbn):
+        """ return a tuple of a row selected by isbn. """
+        return self.cur.execute('SELECT * FROM books WHERE isbn=?', (isbn,)).fetchone()
+
     def select_book_dict(self, isbn):
         """ return a dict. if isbn does not exists in the table, returns empty dict, {}. """
         tpl = self.cur.execute('SELECT * FROM books WHERE isbn=?',(isbn,)).fetchone()
