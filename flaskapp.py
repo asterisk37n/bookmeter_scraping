@@ -9,6 +9,7 @@ from amazon_api import AmazonAPI
 from database import Database
 import time
 import os
+import re
 
 app = Flask(__name__)
 
@@ -21,13 +22,14 @@ app = Flask(__name__)
 def login():
     if request.method == 'POST':
         bookmeter_id = request.form['id'].strip()
-        if bookmeter_id.endswith('/'):
-            bookmeter_id = bookmeter_id[:-1]
-        if not bookmeter_id.startswith('http://bookmeter.com/u/'):
+        if bookmeter_id.isdigit():
+            pass
+        elif re.match(r'^https?://(w{3}.)?bookmeter.com/users/\d+', bookmeter_id):
+            bookmeter_id = re.findall(r'\d+', bookmeter_id)[0]
+        else:
             return render_template('login.html', msg='URL {} is incorrect.'.format(request.form['id']))
-        session['id'] = bookmeter_id.replace('http://bookmeter.com/u/', '')
-        print(session['id'])
-        return redirect(url_for('ab', bookmeter_id=session['id']))
+        print(bookmeter_id)
+        return redirect(url_for('ab', bookmeter_id=bookmeter_id))
     return render_template('login.html')
 
 def loadkey(path):
@@ -52,12 +54,12 @@ def ab(bookmeter_id, page=None):
     db.connect(debug=False)
     aws_access_id, aws_secret_key = loadkey('/home/ec2-user/.aws/credentials/rootkey.csv')
     api = AmazonAPI(aws_access_id, aws_secret_key, 'asterisk37n-22')
-    show_isbns = iter(bs.get_isbns_in_page(page=page))
+    isbns = bs.get_isbns_in_page(page=page)
     visible_books = []
     query_isbns=[]
     time1 = time.time()
     print('finished scraping', time1-starttime)
-    for isbn in show_isbns:
+    for isbn in isbns:
         if db.isnew(isbn):
             visible_books.append(db.select_book_dict(isbn))
         else: 
@@ -87,7 +89,7 @@ def ab(bookmeter_id, page=None):
         return response
         
     start, end = link_range(page, bs.last_page_number)
-    return render_template('ab.html', books=books_shown, page=int(page), last_page_number=bs.last_page_number, bookmeter_id=bookmeter_id, start=start, end=end)
+    return render_template('ab.html', books=books_shown, page=int(page), last_page_number=int(bs.last_page_number), bookmeter_id=bookmeter_id, start=start, end=end)
 
 def link_range(page, last):
     page, last = int(page), int(last)
@@ -139,4 +141,4 @@ def per_request_callbacks(response):
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
